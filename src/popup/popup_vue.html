@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+    <header>
+        <meta charset="utf-8" />
+        <title>ChildWebProtect</title>
+                
+        <style>
+            body{
+                margin : auto;
+                width : 300px;
+                height : 200px;
+                padding : 5px;
+                margin : 10px;
+            }
+            
+            nav #main_log img, nav #main_log h1{
+                display : inline-block;
+                vertical-align : top;
+                margin-bottom : 12px;
+            }
+            nav #main_log img{
+                width : 20%;
+                margin-right : 12px;
+            }
+            nav{
+                margin : 12px;
+            }
+            #main_wrapper #navigation_menu ul{
+                list-style-type : none;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                background-color: #333;           
+            }
+            #main_wrapper #navigation_menu ul li{                
+                float: left;
+                color: white;
+                width:33.33%;
+            }
+
+            #main_wrapper #navigation_menu ul li a {
+                display: block;
+                color: white;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+            }
+
+            /* Change the link color to #111 (black) on hover */
+            #main_wrapper #navigation_menu ul li a:hover {
+              background-color: #111;
+            }
+
+            #main_content{
+                background-image: linear-gradient(to right, rgba(255,0,0,0), rgba(255,0,0,1));
+            }
+        </style>
+
+        <link rel="stylesheet" href="../../ChartJs/dist/Chart.min.css" />
+
+    </header>
+
+    <body>
+        <div id="main_wrapper">
+            <nav>
+                <div id="main_log">
+                    <img src="../../res/img/icon.png" alt="ChildWebProtect" />
+                    <h1>ChildWebProtect</h1>
+                </div>
+
+                <div id="navigation_menu">
+                    <ul>
+                        <li id="navigation_menu_general_overview"><a href="#block_general_overview">General Overview</a></li>
+                        <li id="navigation_menu_statistics"><a href="#block_general_overview_suspected">Global Statistics</a></li>
+                        <li id="navigation_menu_blocked_content"><a href="#block_menu_blocked_content">Blocked content</a></li>
+                    </ul>
+                </div>
+            </nav>
+
+
+            <div id="main_content">
+                
+
+                
+
+                
+            </div>
+
+        </div>
+        
+        <script src="../../lib/ChartJs/dist/Chart.min.js"></script>
+        <script src="popup_logic.js"></script>
+    </body>
+</html>
