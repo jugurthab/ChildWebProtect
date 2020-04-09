@@ -118,5 +118,5 @@ document.addEventListener('DOMContentLoaded', function(event) {
     });
 
     updateNavigationMenuSelectedStyle(navigation_menu_general_overview, navigation_menu_statistics, navigation_menu_blocked_content);
-    getGeneralOverviewBoard();
+    getGeneralOverviewBoard(main_content);
 });
