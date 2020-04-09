@@ -7,10 +7,17 @@
         "default_icon" : "res/img/icon.png",
         "default_popup" : "src/popup/popup_vue.html"
     },
-
-
+    "background" : {
+        "scripts" : ["src/background_scripts/main_script.js"],
+        "persistent" : false
+    },
     "options_ui" : {
         "page" : "src/popup/popup_option_page.html",
         "chrome_style" : true
-    }
+    },
+    "permissions" : [
+        "storage",
+        "tabs",
+        "activeTab"
+    ]
 }
