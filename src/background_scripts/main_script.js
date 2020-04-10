@@ -153,7 +153,7 @@ function init_main(){
         for (var i in prohibitedWebsites) {
            objectStore.add(prohibitedWebsites[i]);
         }
-        registerTabTrackingEvent();
+        
     }
 }
 
@@ -200,3 +200,5 @@ function registerTabTrackingEvent(){
     });
 
 }
+
+registerTabTrackingEvent();
