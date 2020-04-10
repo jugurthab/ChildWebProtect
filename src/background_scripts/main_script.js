@@ -155,6 +155,7 @@ function init_main(){
         }
         chrome.storage.sync.set({"totalvbsites": "0"}, function() {});
         chrome.storage.sync.set({"totalvbsitessuspected": "0"}, function() {});
+        chrome.storage.sync.set({"lastblockedsite": "no site"}, function() {});
     }
 }
 
@@ -198,6 +199,7 @@ function registerTabTrackingEvent(){
                             chrome.storage.sync.get("totalvbsitessuspected",function(items) {
                             var visitedWebSitesBlocked = parseInt(items.totalvbsitessuspected) + 1;
                             chrome.storage.sync.set({"totalvbsitessuspected":visitedWebSitesBlocked}, function() {
+                            chrome.storage.sync.set({"lastblockedsite": tab.url}, function() {});
                             chrome.browserAction.setBadgeText({"text":visitedWebSitesBlocked});
                             });
                         });

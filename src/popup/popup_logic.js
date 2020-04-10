@@ -126,17 +126,22 @@ function getStatistics(main_content){
 
 
 function getBlockedContent(main_content){
-    var blockedSitesNb = document.createElement("p");
-    var blockedSitesNbText = document.createTextNode("Blocked (last 24h) : ");
-    blockedSitesNb.appendChild(blockedSitesNbText);
+    
+    chrome.storage.sync.get("lastblockedsite",function(items) {
 
-    var listBlockedSitesNb = document.createElement("div");
-    var listBlockedSitesNbText = document.createTextNode("Tried to view : ");
-    listBlockedSitesNb.appendChild(listBlockedSitesNbText);
+        var blockedSitesNb = document.createElement("p");
+        var blockedSitesNbText = document.createTextNode("Last blocked website : " + items.lastblockedsite);
+        blockedSitesNb.appendChild(blockedSitesNbText);
 
-    main_content.innerHTML = "";
-    main_content.appendChild(blockedSitesNb);
-    main_content.appendChild(listBlockedSitesNb);
+        var listBlockedSitesNb = document.createElement("div");
+        var listBlockedSitesNbText = document.createTextNode("Last screenshot : ");
+        listBlockedSitesNb.appendChild(listBlockedSitesNbText);
+
+        main_content.innerHTML = "";
+        main_content.appendChild(blockedSitesNb);
+        main_content.appendChild(listBlockedSitesNb);
+    });
+    
 }
 
 function updateNavigationMenuSelectedStyle(selectedMenuOn, unselectedMenu1, unselectedMenu2){
