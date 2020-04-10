@@ -1,17 +1,48 @@
 var MAX_DB_RETURNED_RESULTS = 5;
 
 function getGeneralOverviewBoard(main_content){
-    var visitedSitesNb = document.createElement("p");
-    var visitedSitesNbText = document.createTextNode("Nb. Visited sites (last 24h) : ");
-    visitedSitesNb.appendChild(visitedSitesNbText);
+    var db;
+    var nbBlockedSites = 0;
+    var request = window.indexedDB.open("childWebProtect", 1);
 
-    var suspectedSitesNb = document.createElement("p");
-    var suspectedSitesNbText = document.createTextNode("Suspected (last 24h) : ");
-    suspectedSitesNb.appendChild(suspectedSitesNbText);
-    
-    main_content.innerHTML = "";
-    main_content.appendChild(visitedSitesNb);
-    main_content.appendChild(suspectedSitesNb);
+    request.onerror = function(event) {
+        console.log("error: ");
+    };
+
+    request.onsuccess = function(event) {
+        db = request.result;
+        console.log("success: "+ db);
+        var objectStore = db.transaction(["prohibitweb"], "readonly").objectStore("prohibitweb");
+
+        objectStore.openCursor().onsuccess = function(event) {
+           var cursor = event.target.result;
+
+           if (cursor) {
+                nbBlockedSites += parseInt(cursor.value.nbAccessTime);    
+                cursor.continue();
+           } else {
+                console.log("No more entries!");
+                chrome.storage.sync.get("totalvbsites",function(items) {
+                   
+                    var visitedSitesNb = document.createElement("p");
+                    var visitedSitesNbText = document.createTextNode("Nb. Visited sites (last 24h) : " + items.totalvbsites);
+                    visitedSitesNb.appendChild(visitedSitesNbText);
+
+                    var suspectedSitesNb = document.createElement("p");
+                    var suspectedSitesNbText = document.createTextNode("Suspected (last 24h) : "  + nbBlockedSites.toString());
+                    suspectedSitesNb.appendChild(suspectedSitesNbText);
+                        
+
+                    main_content.innerHTML = "";
+                    main_content.appendChild(visitedSitesNb);
+                    main_content.appendChild(suspectedSitesNb);
+                });
+                
+           }
+
+        };
+        
+    };
 }
 
 
@@ -95,17 +126,6 @@ function getStatistics(main_content){
 
 
 function getBlockedContent(main_content){
-    /*
-<div id="block_menu_blocked_content">
-                    <p>Blocked (last 24h) : <span id="block_menu_blocked_content_blocked"></span></p>
-                    <div>Tried to view : 
-                        <ul id="block_menu_blocked_content_blocked_view">
-
-                        </ul>
-                    </div>
-                </div>
-    */
-
     var blockedSitesNb = document.createElement("p");
     var blockedSitesNbText = document.createTextNode("Blocked (last 24h) : ");
     blockedSitesNb.appendChild(blockedSitesNbText);
@@ -135,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
     navigation_menu_general_overview.addEventListener('click', function(event_click){
         updateNavigationMenuSelectedStyle(navigation_menu_general_overview, navigation_menu_statistics, navigation_menu_blocked_content);
-        getGeneralOverviewBoard(main_content)
+        getGeneralOverviewBoard(main_content);
     });
 
     navigation_menu_statistics.addEventListener('click', function(event_click){

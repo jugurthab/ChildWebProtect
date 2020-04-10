@@ -153,6 +153,7 @@ function init_main(){
         for (var i in prohibitedWebsites) {
            objectStore.add(prohibitedWebsites[i]);
         }
+        chrome.storage.sync.set({"totalvbsites": "0"}, function() {});
     }
 }
 
@@ -162,9 +163,16 @@ function registerTabTrackingEvent(){
     chrome.tabs.onUpdated.addListener( function( tabId,  changeInfo,  tab) {
 
         var suspectedLink = false;
-         
+        
         if(tab.url != REDIRECTION_LINK){
-             var db;
+            var db;
+            chrome.storage.sync.get("totalvbsites",function(items) {
+                var visitedWebSites = parseInt(items.totalvbsites) + 1;
+                chrome.storage.sync.set({"totalvbsites":visitedWebSites}, function() {
+                });
+            });
+             
+
              var request = window.indexedDB.open("childWebProtect", 1);
              
              request.onerror = function(event) {
@@ -186,6 +194,7 @@ function registerTabTrackingEvent(){
                             cursor.value.dateLastAccess = Date.now();
                             cursor.value.nbAccessTime = parseInt(cursor.value.nbAccessTime) + 1;
                             cursor.update(cursor.value);
+                            chrome.browserAction.setBadgeText({"text":"12"});
                             chrome.tabs.update(tab.id, {url: REDIRECTION_LINK});
                         } else
                             cursor.continue();
