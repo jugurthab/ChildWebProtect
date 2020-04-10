@@ -154,6 +154,7 @@ function init_main(){
            objectStore.add(prohibitedWebsites[i]);
         }
         chrome.storage.sync.set({"totalvbsites": "0"}, function() {});
+        chrome.storage.sync.set({"totalvbsitessuspected": "0"}, function() {});
     }
 }
 
@@ -194,7 +195,13 @@ function registerTabTrackingEvent(){
                             cursor.value.dateLastAccess = Date.now();
                             cursor.value.nbAccessTime = parseInt(cursor.value.nbAccessTime) + 1;
                             cursor.update(cursor.value);
-                            chrome.browserAction.setBadgeText({"text":"12"});
+                            chrome.storage.sync.get("totalvbsitessuspected",function(items) {
+                            var visitedWebSitesBlocked = parseInt(items.totalvbsitessuspected) + 1;
+                            chrome.storage.sync.set({"totalvbsitessuspected":visitedWebSitesBlocked}, function() {
+                            chrome.browserAction.setBadgeText({"text":visitedWebSitesBlocked});
+                            });
+                        });
+                            
                             chrome.tabs.update(tab.id, {url: REDIRECTION_LINK});
                         } else
                             cursor.continue();
