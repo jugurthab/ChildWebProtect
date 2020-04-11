@@ -65,7 +65,7 @@ function getStatistics(main_content){
         objectStore.index('nbAccessTime').openCursor(null, "prev").onsuccess = function(event) {
            var cursor = event.target.result;
 
-           if (cursor && i < MAX_DB_RETURNED_RESULTS) {
+           if (cursor && i < MAX_DB_RETURNED_RESULTS && parseInt(cursor.value.nbAccessTime)!=0) {
                 dbData.push(parseInt(cursor.value.nbAccessTime));
                 dbDataSites.push(cursor.value.site);
                 i += 1;    
@@ -87,29 +87,50 @@ function getStatistics(main_content){
                     label: '# of visits',
                     data: dbData,
                     backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
+                        'rgba(226, 125, 96, 0.5)',
+                        'rgba(133, 220, 203, 0.5)',
+                        'rgba(255, 206, 86, 0.5)',
+                        'rgba(232, 168, 124, 0.5)',
+                        'rgba(195, 141, 158, 0.5)',
+                        'rgba(65, 179, 163, 0.5)',
+                        'rgba(175, 210, 117, 0.5)',
+                        'rgba(215, 153, 34, 0.5)',
+                        'rgba(17, 100, 102, 0.5)',
+                        'rgba(255, 228, 0, 0.5)'
                     ],
                     borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
+                        'rgba(226, 125, 96, 1)',
+                        'rgba(133, 220, 203, 1)',
                         'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
+                        'rgba(232, 168, 124, 1)',
+                        'rgba(195, 141, 158, 1)',
+                        'rgba(65, 179, 163, 1)',
+                        'rgba(175, 210, 117, 1)',
+                        'rgba(215, 153, 34, 1)',
+                        'rgba(17, 100, 102, 1)',
+                        'rgba(255, 228, 0, 1)'
                     ],
                     borderWidth: 1
                 }]
             },
             options: {
                 scales: {
+                    xAxes: [{
+                        ticks: {
+                        display: false
+                    },
+                      gridLines: {
+                        display: false,
+                        drawBorder: false
+                      },
+                    }],
                     yAxes: [{
                         ticks: {
-                            beginAtZero: true
+                            display: false
+                        },
+                        gridLines: {
+                            display: false,
+                            drawBorder: true
                         }
                     }]
                 }
