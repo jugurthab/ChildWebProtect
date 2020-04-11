@@ -165,10 +165,10 @@ init_main();
 
 function registerTabTrackingEvent(){
     chrome.tabs.onUpdated.addListener( function( tabId,  changeInfo,  tab) {
-
+        
         var suspectedLink = false;
         
-        if(tab.url != REDIRECTION_LINK){
+        if(tab.url != REDIRECTION_LINK && changeInfo.status == "complete"){
             var db;
             chrome.storage.sync.get("totalvbsites",function(items) {
                 var visitedWebSites = parseInt(items.totalvbsites) + 1;
@@ -200,7 +200,7 @@ function registerTabTrackingEvent(){
                             cursor.update(cursor.value);
                             chrome.storage.sync.get("totalvbsitessuspected",function(items) {
                             var visitedWebSitesBlocked = parseInt(items.totalvbsitessuspected) + 1;
-                            chrome.storage.sync.set({"totalvbsitessuspected":visitedWebSitesBlocked}, function() {
+                            chrome.storage.sync.set({"totalvbsitessuspected":visitedWebSitesBlocked.toString()}, function() {
 
                             var currentdate = new Date(); 
                             var datetime =  currentdate.getDate() + "/"
@@ -217,7 +217,6 @@ function registerTabTrackingEvent(){
                             chrome.browserAction.setBadgeText({"text":visitedWebSitesBlocked.toString()});
                             });
                         });
-                            
                             chrome.tabs.update(tab.id, {url: REDIRECTION_LINK});
                         } else
                             cursor.continue();
@@ -227,8 +226,7 @@ function registerTabTrackingEvent(){
 
                 };
 
-             };
-                
+             };    
         }
 
     });
