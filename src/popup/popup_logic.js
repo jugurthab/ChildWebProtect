@@ -25,14 +25,13 @@ function getGeneralOverviewBoard(main_content){
                 chrome.storage.sync.get("totalvbsites",function(items) {
                    
                     var visitedSitesNb = document.createElement("p");
-                    var visitedSitesNbText = document.createTextNode("Nb. Visited sites (last 24h) : " + items.totalvbsites);
+                    var visitedSitesNbText = document.createTextNode("Nb. Visited sites : " + items.totalvbsites);
                     visitedSitesNb.appendChild(visitedSitesNbText);
 
                     var suspectedSitesNb = document.createElement("p");
-                    var suspectedSitesNbText = document.createTextNode("Suspected (last 24h) : "  + nbBlockedSites.toString());
+                    var suspectedSitesNbText = document.createTextNode("Suspected : "  + nbBlockedSites.toString());
                     suspectedSitesNb.appendChild(suspectedSitesNbText);
-                        
-
+                    
                     main_content.innerHTML = "";
                     main_content.appendChild(visitedSitesNb);
                     main_content.appendChild(suspectedSitesNb);
