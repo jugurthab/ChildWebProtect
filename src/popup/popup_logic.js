@@ -127,14 +127,15 @@ function getStatistics(main_content){
 
 function getBlockedContent(main_content){
     
-    chrome.storage.sync.get("lastblockedsite",function(items) {
+    chrome.storage.sync.get("lastaccessedsite",function(items) {
 
         var blockedSitesNb = document.createElement("p");
-        var blockedSitesNbText = document.createTextNode("Last blocked website : " + items.lastblockedsite);
+        var blockedSitesNbText = document.createTextNode("Last blocked website : " + items.lastaccessedsite.lastblockedsitename);
+
         blockedSitesNb.appendChild(blockedSitesNbText);
 
         var listBlockedSitesNb = document.createElement("div");
-        var listBlockedSitesNbText = document.createTextNode("Last screenshot : ");
+        var listBlockedSitesNbText = document.createTextNode("Last accessed time : " + items.lastaccessedsite.lastblockedsitedate);
         listBlockedSitesNb.appendChild(listBlockedSitesNbText);
 
         main_content.innerHTML = "";

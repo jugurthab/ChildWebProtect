@@ -155,7 +155,9 @@ function init_main(){
         }
         chrome.storage.sync.set({"totalvbsites": "0"}, function() {});
         chrome.storage.sync.set({"totalvbsitessuspected": "0"}, function() {});
-        chrome.storage.sync.set({"lastblockedsite": "no site"}, function() {});
+        var lastVisitedWebsite = {'lastblockedsitename': 'no site', 
+                                  'lastblockedsitedate' : 'no accessed site'};
+        chrome.storage.sync.set({['lastaccessedsite'] : lastVisitedWebsite}, function() {});
     }
 }
 
@@ -199,8 +201,20 @@ function registerTabTrackingEvent(){
                             chrome.storage.sync.get("totalvbsitessuspected",function(items) {
                             var visitedWebSitesBlocked = parseInt(items.totalvbsitessuspected) + 1;
                             chrome.storage.sync.set({"totalvbsitessuspected":visitedWebSitesBlocked}, function() {
-                            chrome.storage.sync.set({"lastblockedsite": tab.url}, function() {});
-                            chrome.browserAction.setBadgeText({"text":visitedWebSitesBlocked});
+
+                            var currentdate = new Date(); 
+                            var datetime =  currentdate.getDate() + "/"
+                                            + (currentdate.getMonth()+1)  + "/" 
+                                            + currentdate.getFullYear() + " @ "  
+                                            + currentdate.getHours() + ":"  
+                                            + currentdate.getMinutes() + ":" 
+                                            + currentdate.getSeconds();
+
+                            var lastVisitedWebsite = {'lastblockedsitename': tab.url, 
+                                  'lastblockedsitedate' : datetime};
+                            chrome.storage.sync.set({['lastaccessedsite'] : lastVisitedWebsite}, function() {});
+
+                            chrome.browserAction.setBadgeText({"text":visitedWebSitesBlocked.toString()});
                             });
                         });
                             
