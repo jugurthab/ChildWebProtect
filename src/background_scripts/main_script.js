@@ -163,27 +163,27 @@ function init_main(){
 
 init_main();
 
-function registerTabTrackingEvent(){
-    chrome.tabs.onUpdated.addListener( function( tabId,  changeInfo,  tab) {
-        
-        var suspectedLink = false;
-        
-        if(tab.url != REDIRECTION_LINK && changeInfo.status == "complete"){
-            var db;
-            chrome.storage.sync.get("totalvbsites",function(items) {
+function updateStats(){
+    chrome.storage.sync.get("totalvbsites",function(items) {
                 var visitedWebSites = parseInt(items.totalvbsites) + 1;
                 chrome.storage.sync.set({"totalvbsites":visitedWebSites}, function() {
                 });
             });
-             
+}
 
-             var request = window.indexedDB.open("childWebProtect", 1);
-             
-             request.onerror = function(event) {
+
+function registerTabTrackingEvent(){
+    chrome.tabs.onUpdated.addListener( function( tabId,  changeInfo,  tab) {
+
+        if(tab.url != REDIRECTION_LINK && changeInfo.status == "loading"){
+            var db;
+            var suspectedLink = false;
+            var request = window.indexedDB.open("childWebProtect", 1);
+            request.onerror = function(event) {
                 console.log("error: ");
-             };
+            };
              
-             request.onsuccess = function(event) {
+            request.onsuccess = function(event) {
                 db = request.result;
                 console.log("success: "+ db);
                 var objectStore = db.transaction(["prohibitweb"], "readwrite").objectStore("prohibitweb");
@@ -217,6 +217,7 @@ function registerTabTrackingEvent(){
                             chrome.browserAction.setBadgeText({"text":visitedWebSitesBlocked.toString()});
                             });
                         });
+                            
                             chrome.tabs.update(tab.id, {url: REDIRECTION_LINK});
                         } else
                             cursor.continue();
@@ -226,9 +227,10 @@ function registerTabTrackingEvent(){
 
                 };
 
-             };    
+             };
+        } else if(changeInfo.status == "complete"){
+            updateStats();
         }
-
     });
 
 }
